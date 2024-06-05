@@ -46,7 +46,7 @@ if __name__ == "__main__":
     trades = []
     last_day = None
 
-    dfs = get_stocks(get_symbols())
+    dfs = get_stocks(get_symbols().to_frame("symbol"))
 
     date_range = dfs[list(dfs.keys())[0]][START:].index
     spy = yf.download("spy")

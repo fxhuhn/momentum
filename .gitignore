@@ -163,6 +163,5 @@ cython_debug/
 
 # Custom
 .DS_Store
-*.csv
 *.pkl
 *.ipynb

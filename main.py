@@ -312,7 +312,7 @@ def load_sp500_stocks(cache: bool = False) -> pd.DataFrame:
 
 
 def main() -> None:
-    stocks = load_sp500_stocks(cache=True)
+    stocks = load_sp500_stocks(cache=False)
     stocks = pre_processing(stocks)
 
     # reduce Data for backtest

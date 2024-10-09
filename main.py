@@ -325,7 +325,7 @@ def main() -> None:
     output.loc["Total", :] = output.mean(axis=0)
     output = output.round(2)
 
-    with open("matrix.txt", "w") as text_file:
+    with open("matrix.md", "w") as text_file:
         text_file.write(
             output.to_markdown(floatfmt=".2f")
             .replace("(", " ")

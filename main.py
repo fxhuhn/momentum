@@ -245,7 +245,7 @@ def main() -> None:
     stocks = pre_processing(stocks)
 
     # reduce Data for backtest
-    stocks = stocks.loc[stocks.reset_index().Month.unique()[-190:]]
+    stocks = stocks.loc[stocks.reset_index().Month.unique()[-82:]]
 
     trade_matrix, profit = backtest(stocks)
 

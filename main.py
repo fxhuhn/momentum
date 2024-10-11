@@ -224,7 +224,6 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
     change_matrix = pd.DataFrame(
         change_matrix, columns=["Year", "Month", "Change"]
     ).set_index(["Year", "Month"])
-    change_matrix.to_csv("./data/change_matrix.csv", header=True, mode="w")
 
     return change_matrix, gewinn
 

@@ -39,81 +39,8 @@ def roc(close: pd.Series, period: int = 10) -> pd.Series:
     return (close - close.shift(period)) / close.shift(period) * 100
 
 
-def sp_500_list():
-    table = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")[0]
-    return list(table.Symbol.str.replace(".", "-"))
-    # return ["aapl", "nflx", "tsla", "csco"]
-
-
 def load_stocks(symbols):
     return yf.download(symbols, start="2000-01-01", group_by="ticker", auto_adjust=True)
-
-
-def df_rearrange(df):
-    # Stack the data to move the ticker symbols into the index
-    df = df.stack(level=0, future_stack=True)
-
-    # Set 'Symbol' and 'Date' as multi-index
-    df.index.names = ["Date", "Ticker"]
-
-    return df.reset_index().set_index(["Ticker", "Date"])
-
-
-def get_trendless(df, date):
-    day = df.loc[(date), ["Close", "SMA_100"]].reset_index()
-    day = day[day["Close"] < day["SMA_100"]].Ticker.values
-    return list(day)
-
-
-def get_lower_quantile(df, date, column, threshold):
-    day = df.loc[(date), column].reset_index()
-    day = day[day[column] < day[column].quantile(threshold)].Ticker.values
-    # day = day[day[column] < 0].Ticker.values
-    return list(day)
-
-
-def get_higher_quantile(df, date, column, threshold):
-    day = df.loc[(date), column].reset_index()
-    day = day[day[column] > day[column].quantile(threshold)].Ticker.values
-    # day = day[day[column] < 0].Ticker.values
-    return list(day)
-
-
-def uptrend(df, date):
-    column = "ROC_10"
-    day = df.loc[(date), column].reset_index()
-    day = day[day[column] > 0].Ticker.values
-    return list(day)
-
-
-def add_day_indicators(df):
-    df["SMA_50"] = df.groupby(level=0)["Close"].transform(
-        lambda x: x.rolling(50).mean()
-    )
-    df["SMA_100"] = df.groupby(level=0)["Close"].transform(
-        lambda x: x.rolling(100).mean()
-    )
-
-    df["PCT"] = df.groupby(level=0)["Close"].transform(
-        lambda x: round(x.pct_change() * 100, 1)
-    )
-    df["ROC_10"] = df.groupby(level=0)["Close"].transform(lambda x: roc(x, 7))
-    df["Changes"] = df.groupby(level=0)["PCT"].transform(lambda x: np.sign(x))
-    return df
-
-
-def add_month_indicators(df):
-    for interval in [3, 6, 9, 12]:
-        df[f"changes_{interval}"] = df.groupby(level=1)["Changes_PCT"].transform(
-            (lambda x: x.rolling(interval).sum().shift(1))
-        )
-        df[f"PCT_{interval}"] = df.groupby(level=1)["PCT"].transform(
-            (lambda x: x.rolling(interval).sum().shift(1))
-        )
-
-    df["ROC_12"] = df.groupby(level=1)["Close"].transform(lambda x: roc(x, 12).shift(1))
-    df["SMA_100"] = df.groupby(level=1)["SMA_100"].transform(lambda x: x.shift(1))
-    return df
 
 
 def resample_df(df):
@@ -148,7 +75,7 @@ def add_indicator_day(df: pd.DataFrame) -> pd.DataFrame:
     df["ROC_7"] = df.groupby(level=0)["Close"].transform(lambda x: roc(x, 7))
 
     df["PCT"] = df.groupby(level=0)["Close"].transform(
-        lambda x: round(x.pct_change() * 100, 1)
+        lambda x: x.ffill().pct_change(fill_method=None) * 100
     )
     df["Changes"] = df.groupby(level=0)["PCT"].transform(lambda x: np.sign(x))
 
@@ -283,6 +210,8 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
             trades["Gewinn"] = (trades.Close - trades.Open) * trades.qty
             gewinn = trades.Gewinn.sum()
 
+            trades = trades.round({"Open": 2, "Close": 2, "Profit": 1, "Gewinn": 2})
+            # trades.qty = trades.qty.astype(int)
             trades.to_csv(f"./data/trades/{year_month}.csv", header=True, mode="w")
 
             change_matrix = change_matrix + [
@@ -321,8 +250,8 @@ def main() -> None:
     trade_matrix, profit = backtest(stocks)
 
     output = trade_matrix.unstack(level=1)
-    output.loc[:, "Total"] = output.mean(axis=1)
-    output.loc["Total", :] = output.mean(axis=0)
+    output.loc[:, "Average"] = output.mean(axis=1)
+    output.loc["Average", :] = output.mean(axis=0)
     output = output.round(2)
 
     with open("matrix.md", "w") as text_file:

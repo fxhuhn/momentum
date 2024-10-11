@@ -204,7 +204,12 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
 
     for year_month, ticker in trade_ticker.items():
         trades = df.loc[(year_month, ticker), ["Open", "Close"]]
+        trades_debug = df.loc[(year_month, ticker), :]
         if len(trades) > 0:
+            trades_debug.to_csv(
+                f"./data/trades/debug_{year_month}.csv", header=True, mode="w"
+            )
+
             trades["Profit"] = (trades.Close - trades.Open) / trades.Open * 100
             trades["qty"] = (start / len(trades)) // trades.Open
             trades["Gewinn"] = (trades.Close - trades.Open) * trades.qty

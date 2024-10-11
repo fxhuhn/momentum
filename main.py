@@ -40,7 +40,7 @@ def roc(close: pd.Series, period: int = 10) -> pd.Series:
 
 
 def load_stocks(symbols):
-    return yf.download(symbols, start="2000-01-01", group_by="ticker", auto_adjust=True)
+    return yf.download(symbols, start="2000-01-01", group_by="ticker")
 
 
 def resample_df(df):
@@ -246,7 +246,9 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
                     # "PCT_9",
                     # "PCT_12",
                 ]
-            ].to_csv(f"./data/trades/debug_{year_month}.csv", header=True, mode="w")
+            ].sort_values("Ticker").to_csv(
+                f"./data/trades/debug_{year_month}.csv", header=True, mode="w"
+            )
 
             trades["Profit"] = (trades.Close - trades.Open) / trades.Open * 100
             trades["qty"] = (start / len(trades)) // trades.Open
@@ -255,7 +257,9 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
 
             trades = trades.round({"Open": 2, "Close": 2, "Profit": 1, "Gewinn": 2})
             # trades.qty = trades.qty.astype(int)
-            trades.to_csv(f"./data/trades/{year_month}.csv", header=True, mode="w")
+            trades.sort_values("Ticker").to_csv(
+                f"./data/trades/{year_month}.csv", header=True, mode="w"
+            )
 
             change_matrix = change_matrix + [
                 list((year_month[:2], year_month[-2:], trades.Profit.mean()))

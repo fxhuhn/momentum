@@ -206,9 +206,47 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
         trades = df.loc[(year_month, ticker), ["Open", "Close"]]
         trades_debug = df.loc[(year_month, ticker), :]
         if len(trades) > 0:
-            trades_debug.to_csv(
-                f"./data/trades/debug_{year_month}.csv", header=True, mode="w"
+            trades = trades.round({"Open": 2, "Close": 2, "Profit": 1, "Gewinn": 2})
+            trades_debug = trades_debug.round(
+                {
+                    "Open": 2,
+                    "Close": 2,
+                    "Profit": 1,
+                    "Gewinn": 2,
+                    "SMA": 2,
+                    "PCT": 4,
+                    "Changes_pct": 4,
+                    "ROC_7": 4,
+                    "ROC_12": 4,
+                    "Changes_3": 4,
+                    "Changes_6": 4,
+                    "Changes_9": 4,
+                    "Changes_12": 4,
+                    "PCT_3": 4,
+                    "PCT_6": 4,
+                    "PCT_9": 4,
+                    "PCT_12": 4,
+                }
             )
+
+            trades_debug[
+                [
+                    "Open",
+                    "Close",
+                    "SMA",
+                    "PCT",
+                    "ROC_7",
+                    "ROC_12",
+                    # "Changes_3",
+                    "Changes_6",
+                    "Changes_9",
+                    # "Changes_12",
+                    "PCT_3",
+                    # "PCT_6",
+                    # "PCT_9",
+                    # "PCT_12",
+                ]
+            ].to_csv(f"./data/trades/debug_{year_month}.csv", header=True, mode="w")
 
             trades["Profit"] = (trades.Close - trades.Open) / trades.Open * 100
             trades["qty"] = (start / len(trades)) // trades.Open

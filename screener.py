@@ -211,7 +211,7 @@ def load_sp500_stocks(cache: bool = False) -> pd.DataFrame:
         except Exception as e:
             print(e)
             df = None
-    if df in None:
+    if df is None:
         df = load_stocks(sp_500_stocks.all_symbols())
         df.to_pickle("./data/stocks.pkl")
 

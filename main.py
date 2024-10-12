@@ -246,7 +246,7 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
                     # "PCT_9",
                     # "PCT_12",
                 ]
-            ].sort_values("Ticker").to_csv(
+            ].sort_values("Ticker").dropna().to_csv(
                 f"./data/trades/debug_{year_month}.csv", header=True, mode="w"
             )
 
@@ -257,7 +257,7 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
 
             trades = trades.round({"Open": 2, "Close": 2, "Profit": 1, "Gewinn": 2})
             # trades.qty = trades.qty.astype(int)
-            trades.sort_values("Ticker").to_csv(
+            trades.sort_values("Ticker").dropna().to_csv(
                 f"./data/trades/{year_month}.csv", header=True, mode="w"
             )
 
@@ -291,7 +291,7 @@ def main() -> None:
     stocks = pre_processing(stocks)
 
     # reduce Data for backtest
-    stocks = stocks.loc[stocks.reset_index().Month.unique()[-82:]]
+    stocks = stocks.loc[stocks.reset_index().Month.unique()[-166:]]
 
     trade_matrix, profit = backtest(stocks)
 

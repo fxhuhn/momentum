@@ -205,9 +205,13 @@ def backtest(df: pd.DataFrame) -> dict():
 
 def load_sp500_stocks(cache: bool = False) -> pd.DataFrame:
     if cache:
-        with open("./data/stocks.pkl", "rb") as file:
-            df = pickle.load(file)
-    else:
+        try:
+            with open("./data/stocks.pkl", "rb") as file:
+                df = pickle.load(file)
+        except Exception as e:
+            print(e)
+            df = None
+    if df in None:
         df = load_stocks(sp_500_stocks.all_symbols())
         df.to_pickle("./data/stocks.pkl")
 

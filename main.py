@@ -300,11 +300,11 @@ def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
 
 
 def main() -> None:
-    stocks = load_sp500_stocks(cache=True)
+    stocks = load_sp500_stocks(cache=False)
     stocks = pre_processing(stocks)
 
     # reduce Data for backtest
-    stocks = stocks.loc[stocks.reset_index().Month.unique()[-166:]]  # 11:166, 18:82
+    stocks = stocks.loc[stocks.reset_index().Month.unique()[-82:]]  # 11:166, 18:82
 
     trade_matrix, profit = backtest(stocks)
 

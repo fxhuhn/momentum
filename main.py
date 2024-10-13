@@ -177,13 +177,23 @@ def strategy(df) -> pd.DataFrame:
     ticker = ticker + downtrend(df)
 
     ticker = list(set(df.index.unique()) - set(ticker))
-    return df.loc[ticker]["ROC_12"].nlargest(MAX_TICKER).index
+
+    """
+    # choose random ticker
+    if len(df.loc[ticker]["ROC_12"]) > 0:
+        return df.loc[ticker]["ROC_12"].sample(MAX_TICKER).index
+    else:
+        return []
+    """
+    # return df.loc[ticker]["ROC_12"].nlargest(MAX_TICKER).index
+    return df.loc[ticker]["ROC_12"].nsmallest(MAX_TICKER).index
 
 
 def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
     trade_ticker = {}
     start = 10_000
     change_matrix = []
+    depot = []
 
     for year_month in df.reset_index().Month.unique():
         available_ticker = sp_500_ticker(year_month)
@@ -267,15 +277,18 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
         else:
             gewinn = 0
         start = start + gewinn
+        depot = depot + [{"year_month": year_month, "depot": start, "monthly": gewinn}]
 
     change_matrix = pd.DataFrame(
         change_matrix, columns=["Year", "Month", "Change"]
     ).set_index(["Year", "Month"])
 
-    return change_matrix, gewinn
+    pd.DataFrame(depot).to_csv("./data/depot.csv", header=True, mode="w", index=False)
+
+    return change_matrix, start
 
 
-def load_sp500_stocks(cache: bool = False) -> pd.DataFrame:
+def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
     if cache:
         with open("./data/stocks.pkl", "rb") as file:
             df = pickle.load(file)
@@ -287,11 +300,11 @@ def load_sp500_stocks(cache: bool = False) -> pd.DataFrame:
 
 
 def main() -> None:
-    stocks = load_sp500_stocks(cache=False)
+    stocks = load_sp500_stocks(cache=True)
     stocks = pre_processing(stocks)
 
     # reduce Data for backtest
-    stocks = stocks.loc[stocks.reset_index().Month.unique()[-166:]]
+    stocks = stocks.loc[stocks.reset_index().Month.unique()[-166:]]  # 11:166, 18:82
 
     trade_matrix, profit = backtest(stocks)
 
@@ -310,7 +323,7 @@ def main() -> None:
         )
     print(output)
 
-    print(profit)
+    print(f"{profit:,.0f}")
 
 
 if __name__ == "__main__":

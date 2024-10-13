@@ -177,7 +177,8 @@ def strategy(df) -> pd.DataFrame:
     ticker = ticker + downtrend(df)
 
     ticker = list(set(df.index.unique()) - set(ticker))
-    return df.loc[ticker]["ROC_12"].nlargest(MAX_TICKER).index
+    # return df.loc[ticker]["ROC_12"].nlargest(MAX_TICKER).index
+    return df.loc[ticker]["ROC_12"].nsmallest(MAX_TICKER).index
 
 
 def backtest(df: pd.DataFrame) -> dict():

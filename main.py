@@ -12,7 +12,7 @@ QUANTILE_HIGH_MOMENTUM = 0.9
 class SP_500_stocks:
     df = None
 
-    def __init__(self, filename="S&P_500_Historical_04-08-2024.csv") -> None:
+    def __init__(self, filename="S&P_500_Historical_08-17-2024.csv") -> None:
         if os.path.isfile(filename):
             self.df = pd.read_csv(filename, index_col="date")
             self.df = self.df[self.df.index >= "2000-01-01"]
@@ -294,13 +294,13 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
 
 
 def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
+    df = None
     if cache:
         try:
             with open("./data/stocks.pkl", "rb") as file:
                 df = pickle.load(file)
         except Exception as e:
             print(e)
-            df = None
     if df is None:
         df = load_stocks(sp_500_stocks.all_symbols())
         df.to_pickle("./data/stocks.pkl")
@@ -309,7 +309,7 @@ def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
 
 
 def main() -> None:
-    stocks = load_sp500_stocks(cache=False)
+    stocks = load_sp500_stocks()
     stocks = pre_processing(stocks)
 
     # reduce Data for backtest

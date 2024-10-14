@@ -9,4 +9,4 @@
 | 24-08 | PODD | BWA  | MKC | APD  | PYPL | MDT  | XEL  | MAA  | O   | JNJ |
 | 24-09 | BWA  | TAP  | PPG | LUV  | STZ  | DE   | APD  | HAS  | FDS | MKC |
 | 24-10 | UPS  | TAP  | ROK | VLTO | EOG  | ODFL | CSCO | CF   | PPG | APD |
-| 24-11 | HAL  | NKE  | SLB | ADM  | BG   | GL   | CVS  | HES  | DAY | JBL |
+| 24-11 | HAL  | NKE  | SLB | BG   | GL   | TAP  | HES  | CVS  | DAY | MRO |

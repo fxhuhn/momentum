@@ -274,9 +274,14 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
             change_matrix = change_matrix + [
                 list((year_month[:2], year_month[-2:], trades.Profit.mean()))
             ]
+
+            start = (
+                start
+                - (trades.Open * trades.qty).sum()
+                + (trades.Close * trades.qty).sum()
+            )
         else:
             gewinn = 0
-        start = start + gewinn
         depot = depot + [{"year_month": year_month, "depot": start, "monthly": gewinn}]
 
     change_matrix = pd.DataFrame(
@@ -290,9 +295,13 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
 
 def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
     if cache:
-        with open("./data/stocks.pkl", "rb") as file:
-            df = pickle.load(file)
-    else:
+        try:
+            with open("./data/stocks.pkl", "rb") as file:
+                df = pickle.load(file)
+        except Exception as e:
+            print(e)
+            df = None
+    if df is None:
         df = load_stocks(sp_500_stocks.all_symbols())
         df.to_pickle("./data/stocks.pkl")
 
@@ -304,7 +313,9 @@ def main() -> None:
     stocks = pre_processing(stocks)
 
     # reduce Data for backtest
-    stocks = stocks.loc[stocks.reset_index().Month.unique()[-82:]]  # 11:166, 18:82
+    stocks = stocks.loc[
+        stocks.reset_index().Month.unique()[-46:]
+    ]  # 11:166, 18:82, 21:46, 23:22
 
     trade_matrix, profit = backtest(stocks)
 

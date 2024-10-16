@@ -71,7 +71,9 @@ def convert_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def add_indicator_day(df: pd.DataFrame) -> pd.DataFrame:
-    df["SMA"] = df.groupby(level=0)["Close"].transform(lambda x: x.rolling(100).mean())
+    df["SMA"] = df.groupby(level=0)["Close"].transform(
+        lambda x: x.rolling(100).mean().round(2)
+    )
     df["ROC_7"] = df.groupby(level=0)["Close"].transform(lambda x: roc(x, 7))
 
     df["PCT"] = df.groupby(level=0)["Close"].transform(
@@ -104,6 +106,7 @@ def resample_month(df: pd.DataFrame) -> pd.DataFrame:
 def add_indicator_month(df: pd.DataFrame) -> pd.DataFrame:
     df["ROC_12"] = df.groupby(level=1)["Close"].transform(lambda x: roc(x, 12).shift(1))
     df["SMA"] = df.groupby(level=1)["SMA"].transform(lambda x: x.shift(1))
+    df["last_Close"] = df.Close.shift(1)
 
     for interval in [3, 6, 9, 12]:
         df[f"Changes_{interval}"] = df.groupby(level=1)["Changes_pct"].transform(
@@ -136,38 +139,38 @@ def match_available_ticker(df_ticker: list, sp_500_ticker: list) -> list:
 
 def strategy(df) -> pd.DataFrame:
     MAX_TICKER = 10
-    QUANTILE_LOW_MOMENTUM = 0.3
-    QUANTILE_HIGH_MOMENTUM = 0.9
+    QUANTILE_LOW_MOMENTUM = 0.5
+    QUANTILE_HIGH_MOMENTUM = 0.8
 
     def lower_quantile(df: pd.DataFrame, column, threshold):
         df = df[column]
-        ticker = df[df < df.quantile(threshold)].index
+        ticker = df[df <= df.quantile(threshold)].index
         return list(ticker)
 
     def higher_quantile(df: pd.DataFrame, column, threshold):
         df = df[column]
-        ticker = df[df > df.quantile(threshold)].index
+        ticker = df[df >= df.quantile(threshold)].index
         return list(ticker)
 
     def trendless(df: pd.DataFrame):
-        df = df[["Close", "SMA"]]
-        ticker = df[df.Close.shift(1) < df.SMA].index
+        df = df[["last_Close", "SMA"]]
+        ticker = df[df.last_Close < df.SMA].index
         return list(ticker)
 
     def downtrend(df):
         df = df[["ROC_7"]]
-        ticker = df[df.ROC_7 < 0].index
+        ticker = df[df.ROC_7 <= 0].index
         return list(ticker)
 
     ticker = []
-    for changes_idx in [6, 9]:
+    for changes_idx in [9, 12]:
         ticker = ticker + lower_quantile(
             df,
             f"Changes_{changes_idx}",
             QUANTILE_LOW_MOMENTUM,
         )
 
-    for pct_idx in [3]:
+    for pct_idx in [3, 6, 9]:
         ticker = ticker + higher_quantile(
             df,
             f"PCT_{pct_idx}",
@@ -196,6 +199,7 @@ def backtest(df: pd.DataFrame) -> dict():
                 (year_month, monthly_ticker),
                 :,
             ]
+            .dropna()
             .reset_index()
             .drop("Month", axis=1)
             .set_index("Ticker")
@@ -216,7 +220,7 @@ def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
         df = load_stocks(sp_500_stocks.all_symbols())
         df.to_pickle("./data/stocks.pkl")
 
-    return df
+    return df.round(2)
 
 
 def main() -> None:
@@ -237,6 +241,11 @@ def main() -> None:
     stocks = stocks.loc[stocks.reset_index().Month.unique()[-10:]].ffill()
 
     trades = backtest(stocks)
+
+    for year_month, symbols in trades.items():
+        if len(symbols) < 10:
+            for i in range(len(symbols), 10):
+                trades[year_month].append("")
 
     with open("trades.md", "w") as text_file:
         text_file.write(pd.DataFrame.from_dict(trades).T.to_markdown())

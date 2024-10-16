@@ -72,7 +72,7 @@ def convert_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
 
 def add_indicator_day(df: pd.DataFrame) -> pd.DataFrame:
     df["SMA"] = df.groupby(level=0)["Close"].transform(
-        lambda x: x.rolling(100).mean().round(2)
+        lambda x: x.rolling(150).mean().round(2)
     )
     df["ROC_7"] = df.groupby(level=0)["Close"].transform(lambda x: roc(x, 7))
 
@@ -139,8 +139,8 @@ def match_available_ticker(df_ticker: list, sp_500_ticker: list) -> list:
 
 def strategy(df) -> pd.DataFrame:
     MAX_TICKER = 10
-    QUANTILE_LOW_MOMENTUM = 0.3
-    QUANTILE_HIGH_MOMENTUM = 0.9
+    QUANTILE_LOW_MOMENTUM = 0.5
+    QUANTILE_HIGH_MOMENTUM = 0.8
 
     def lower_quantile(df: pd.DataFrame, column, threshold):
         df = df[column]
@@ -163,14 +163,14 @@ def strategy(df) -> pd.DataFrame:
         return list(ticker)
 
     ticker = []
-    for changes_idx in [6, 9]:
+    for changes_idx in [9, 12]:
         ticker = ticker + lower_quantile(
             df,
             f"Changes_{changes_idx}",
             QUANTILE_LOW_MOMENTUM,
         )
 
-    for pct_idx in [3]:
+    for pct_idx in [3, 6, 9]:
         ticker = ticker + higher_quantile(
             df,
             f"PCT_{pct_idx}",

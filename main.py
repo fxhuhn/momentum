@@ -71,7 +71,9 @@ def convert_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def add_indicator_day(df: pd.DataFrame) -> pd.DataFrame:
-    df["SMA"] = df.groupby(level=0)["Close"].transform(lambda x: x.rolling(100).mean())
+    df["SMA"] = df.groupby(level=0)["Close"].transform(
+        lambda x: x.rolling(100).mean().round(2)
+    )
     df["ROC_7"] = df.groupby(level=0)["Close"].transform(lambda x: roc(x, 7))
 
     df["PCT"] = df.groupby(level=0)["Close"].transform(
@@ -104,6 +106,7 @@ def resample_month(df: pd.DataFrame) -> pd.DataFrame:
 def add_indicator_month(df: pd.DataFrame) -> pd.DataFrame:
     df["ROC_12"] = df.groupby(level=1)["Close"].transform(lambda x: roc(x, 12).shift(1))
     df["SMA"] = df.groupby(level=1)["SMA"].transform(lambda x: x.shift(1))
+    df["last_Close"] = df.Close.shift(1)
 
     for interval in [3, 6, 9, 12]:
         df[f"Changes_{interval}"] = df.groupby(level=1)["Changes_pct"].transform(
@@ -141,22 +144,22 @@ def strategy(df) -> pd.DataFrame:
 
     def lower_quantile(df: pd.DataFrame, column, threshold):
         df = df[column]
-        ticker = df[df < df.quantile(threshold)].index
+        ticker = df[df <= df.quantile(threshold)].index
         return list(ticker)
 
     def higher_quantile(df: pd.DataFrame, column, threshold):
         df = df[column]
-        ticker = df[df > df.quantile(threshold)].index
+        ticker = df[df >= df.quantile(threshold)].index
         return list(ticker)
 
     def trendless(df: pd.DataFrame):
-        df = df[["Close", "SMA"]]
-        ticker = df[df.Close.shift(1) < df.SMA].index
+        df = df[["last_Close", "SMA"]].copy()
+        ticker = df[df.last_Close <= df.SMA].index
         return list(ticker)
 
     def downtrend(df):
         df = df[["ROC_7"]]
-        ticker = df[df.ROC_7 < 0].index
+        ticker = df[df.ROC_7 <= 0].index
         return list(ticker)
 
     ticker = []
@@ -207,6 +210,7 @@ def backtest(df: pd.DataFrame):  # -> tuple(pd.DataFrame, float):
                 (year_month, monthly_ticker),
                 :,
             ]
+            .dropna()
             .reset_index()
             .drop("Month", axis=1)
             .set_index("Ticker")
@@ -305,7 +309,7 @@ def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
         df = load_stocks(sp_500_stocks.all_symbols())
         df.to_pickle("./data/stocks.pkl")
 
-    return df
+    return df.round(2)
 
 
 def main() -> None:

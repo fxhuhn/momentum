@@ -151,7 +151,7 @@ def strategy(df) -> pd.DataFrame:
 
     def trendless(df: pd.DataFrame):
         df = df[["Close", "SMA"]]
-        ticker = df[df.Close < df.SMA].index
+        ticker = df[df.Close.shift(1) < df.SMA].index
         return list(ticker)
 
     def downtrend(df):
@@ -314,8 +314,8 @@ def main() -> None:
 
     # reduce Data for backtest
     stocks = stocks.loc[
-        stocks.reset_index().Month.unique()[-46:]
-    ]  # 11:166, 18:82, 21:46, 23:22
+        stocks.reset_index().Month.unique()[-166:]
+    ]  # 11:166, 18:82, 21:46, 23:22, 21:46
 
     trade_matrix, profit = backtest(stocks)
 

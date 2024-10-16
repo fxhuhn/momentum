@@ -151,7 +151,7 @@ def strategy(df) -> pd.DataFrame:
 
     def trendless(df: pd.DataFrame):
         df = df[["Close", "SMA"]]
-        ticker = df[df.Close < df.SMA].index
+        ticker = df[df.Close.shift(1) < df.SMA].index
         return list(ticker)
 
     def downtrend(df):

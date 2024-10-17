@@ -23,6 +23,7 @@ Die Forschungen von Fama und French haben gezeigt, dass der Momentum-Effekt eine
 
 ### Anwendung in der Praxis
 Der in diesem Falle entwickelte Algorithmen konnte auf Grundlage dieser Strategie den S&P 500 sowie den NASDAQ 100 outperformen.
+
 ![Performance Chart](performance.png)
 
 
@@ -42,7 +43,7 @@ Der in diesem Falle entwickelte Algorithmen konnte auf Grundlage dieser Strategi
 | 22      |              -1.24 |              -4.58 |               8.23 |              -4.09 |               7.05 |              -9.19 |              11.21 |              -3.32 |                    |              11.20 |               6.73 |              -5.05 |              1.54 |
 | 23      |               6.79 |              -4.60 |               4.30 |               1.49 |              -6.36 |              15.57 |               4.28 |              -3.76 |              -2.54 |              -5.78 |               7.45 |               7.27 |              2.01 |
 | 24      |               0.09 |               3.73 |               6.76 |              -3.27 |               4.35 |               0.68 |               6.12 |               5.15 |               1.41 |               0.12 |                    |                    |              2.51 |
-| Mittel |               1.36 |              -0.07 |               3.06 |               1.83 |               2.06 |               0.70 |               2.76 |               0.09 |              -0.33 |               2.64 |               3.68 |               0.63 |              1.53 |
+| **Mittel** |               **1.36** |              **-0.07** |               **3.06** |               **1.83** |               **2.06** |               **0.70** |               **2.76** |               **0.09** |              **-0.33** |               **2.64** |               **3.68** |               **0.63** |              **1.53** |
 
 
 ### Quellen

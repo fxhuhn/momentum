@@ -40,7 +40,7 @@ def roc(close: pd.Series, period: int = 10) -> pd.Series:
 
 
 def load_stocks(symbols):
-    return yf.download(symbols, start="2000-01-01", group_by="ticker")
+    return yf.download(symbols, start="2000-01-01", group_by="ticker", rounding=True)
 
 
 def resample_df(df):

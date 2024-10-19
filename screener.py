@@ -1,129 +1,23 @@
-import os
 import pickle
 
-import numpy as np
 import pandas as pd
 import yfinance as yf
 
-QUANTILE_LOW_MOMENTUM = 0.3
-QUANTILE_HIGH_MOMENTUM = 0.9
+from tools import SP500, calc
+from tools import strategy as momentum
 
-
-class SP_500_stocks:
-    df = None
-
-    def __init__(self, filename="S&P_500_Historical_08-17-2024.csv") -> None:
-        if os.path.isfile(filename):
-            self.df = pd.read_csv(filename, index_col="date")
-            self.df = self.df[self.df.index >= "2000-01-01"]
-            self.df["tickers"] = self.df["tickers"].apply(
-                lambda x: sorted(x.split(","))
-            )
-
-    def get_symbols(self, year: int, month: int, day: int = 1) -> list[str]:
-        if self.df is None:
-            return None
-
-        snap_shot = f"{year}-{month:02}-{day:02}"
-        df2 = self.df[self.df.index <= snap_shot]
-        return df2.tail(1).tickers.values[0]
-
-    def all_symbols(self) -> list[str]:
-        return sorted(set(sum(self.df.tickers.values, [])))
-
-
-sp_500_stocks = SP_500_stocks()
-
-
-def roc(close: pd.Series, period: int = 10) -> pd.Series:
-    return (close - close.shift(period)) / close.shift(period) * 100
+sp_500_stocks = SP500.stocks
 
 
 def load_stocks(symbols):
     return yf.download(symbols, start="2000-01-01", group_by="ticker", rounding=True)
 
 
-def resample_df(df):
-    df = df.reset_index()
-    df["Month"] = df["Date"].dt.strftime("%y-%m")
-    df = df.groupby(["Month", "Ticker"]).agg(
-        Date=("Date", "last"),
-        Open=("Open", "first"),
-        Close=("Close", "last"),
-        Changes=("Changes", "sum"),
-        PCT=("PCT", "sum"),
-        SMA_100=("SMA_100", "last"),
-        ROC_10=("ROC_10", "first"),
-    )
-
-    df["Changes_PCT"] = df["Changes"] + (df["PCT"] / 100000)
-
-    return df
-
-
-def convert_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
-    # Stack the data to move the ticker symbols into the index
-    df = df.stack(level=0, future_stack=True)
-    df.index.names = ["Date", "Ticker"]
-
-    # Set 'Ticker' and 'Date' as multi-index
-    return df.reset_index().set_index(["Ticker", "Date"])
-
-
-def add_indicator_day(df: pd.DataFrame) -> pd.DataFrame:
-    df["SMA"] = df.groupby(level=0)["Close"].transform(
-        lambda x: x.rolling(100).mean().round(2)
-    )
-    df["ROC_7"] = df.groupby(level=0)["Close"].transform(lambda x: roc(x, 7))
-
-    df["PCT"] = df.groupby(level=0)["Close"].transform(
-        lambda x: x.ffill().pct_change(fill_method=None) * 100
-    )
-    df["Changes"] = df.groupby(level=0)["PCT"].transform(lambda x: np.sign(x))
-
-    return df
-
-
-def resample_month(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.reset_index()
-
-    df["Month"] = df["Date"].dt.strftime("%y-%m")
-
-    df = df.groupby(["Month", "Ticker"]).agg(
-        Date=("Date", "last"),
-        Open=("Open", "first"),
-        Close=("Close", "last"),
-        Changes=("Changes", "sum"),
-        PCT=("PCT", "sum"),
-        SMA=("SMA", "last"),
-        ROC_7=("ROC_7", "first"),
-    )
-
-    df["Changes_pct"] = df["Changes"] + (df["PCT"] / 100000)
-    return df
-
-
-def add_indicator_month(df: pd.DataFrame) -> pd.DataFrame:
-    df["ROC_12"] = df.groupby(level=1)["Close"].transform(lambda x: roc(x, 12).shift(1))
-    df["SMA"] = df.groupby(level=1)["SMA"].transform(lambda x: x.shift(1))
-    df["last_Close"] = df.Close.shift(1)
-
-    for interval in [3, 6, 9, 12]:
-        df[f"Changes_{interval}"] = df.groupby(level=1)["Changes_pct"].transform(
-            (lambda x: x.rolling(interval).sum().shift(1))
-        )
-        df[f"PCT_{interval}"] = df.groupby(level=1)["PCT"].transform(
-            (lambda x: x.rolling(interval).sum().shift(1))
-        )
-
-    return df
-
-
 def pre_processing(df: pd.DataFrame) -> pd.DataFrame:
-    df = convert_to_multiindex(df)
-    df = add_indicator_day(df)
-    df = resample_month(df)
-    df = add_indicator_month(df)
+    df = calc.convert_to_multiindex(df)
+    df = calc.add_indicator_day(df)
+    df = calc.resample_month(df)
+    df = calc.add_indicator_month(df)
     return df
 
 
@@ -137,53 +31,6 @@ def match_available_ticker(df_ticker: list, sp_500_ticker: list) -> list:
     return list(set(sp_500_ticker).intersection(df_ticker))
 
 
-def strategy(df) -> pd.DataFrame:
-    MAX_TICKER = 10
-    QUANTILE_LOW_MOMENTUM = 0.5
-    QUANTILE_HIGH_MOMENTUM = 0.8
-
-    def lower_quantile(df: pd.DataFrame, column, threshold):
-        df = df[column]
-        ticker = df[df <= df.quantile(threshold)].index
-        return list(ticker)
-
-    def higher_quantile(df: pd.DataFrame, column, threshold):
-        df = df[column]
-        ticker = df[df >= df.quantile(threshold)].index
-        return list(ticker)
-
-    def trendless(df: pd.DataFrame):
-        df = df[["last_Close", "SMA"]]
-        ticker = df[df.last_Close < df.SMA].index
-        return list(ticker)
-
-    def downtrend(df):
-        df = df[["ROC_7"]]
-        ticker = df[df.ROC_7 <= 0].index
-        return list(ticker)
-
-    ticker = []
-    for changes_idx in [9, 12]:
-        ticker = ticker + lower_quantile(
-            df,
-            f"Changes_{changes_idx}",
-            QUANTILE_LOW_MOMENTUM,
-        )
-
-    for pct_idx in [3, 6, 9]:
-        ticker = ticker + higher_quantile(
-            df,
-            f"PCT_{pct_idx}",
-            QUANTILE_HIGH_MOMENTUM,
-        )
-    ticker = ticker + trendless(df)
-    ticker = ticker + downtrend(df)
-
-    ticker = list(set(df.index.unique()) - set(ticker))
-    # return df.loc[ticker]["ROC_12"].nlargest(MAX_TICKER).index
-    return df.loc[ticker]["ROC_12"].nsmallest(MAX_TICKER).index
-
-
 def backtest(df: pd.DataFrame) -> dict():
     trade_ticker = {}
 
@@ -194,7 +41,7 @@ def backtest(df: pd.DataFrame) -> dict():
             sp_500_ticker=available_ticker,
         )
 
-        trade_ticker[year_month] = strategy(
+        trade_ticker[year_month] = momentum.strategy(
             df.loc[
                 (year_month, monthly_ticker),
                 :,

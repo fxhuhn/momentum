@@ -14,6 +14,9 @@ depot["Date"] = pd.to_datetime(
 )
 depot.set_index("Date", inplace=True)
 
+spy = spy[depot.iloc[0].name :].copy()
+ndx = ndx[depot.iloc[0].name :].copy()
+
 spy["invest_spy"] = spy.Open * (10_000 // spy.Open.values[1])
 ndx["invest_ndx"] = ndx.Open * (10_000 // ndx.Open.values[1])
 

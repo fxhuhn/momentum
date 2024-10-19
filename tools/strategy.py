@@ -1,5 +1,8 @@
 import pandas as pd
 
+with open("./data/blacklist.txt", "r") as text_file:
+    blacklist = text_file.read().split(",")
+
 
 def strategy(df) -> pd.DataFrame:
     MAX_TICKER = 10
@@ -37,6 +40,7 @@ def strategy(df) -> pd.DataFrame:
         return list(ticker)
 
     ticker = []
+    ticker = blacklist
     """
     for changes_idx in [3, 6, 9, 12]:
         ticker = ticker + lower_quantile(

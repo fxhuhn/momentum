@@ -9,4 +9,4 @@
 | 24-08 | JNJ  | EVRG | PAYX | ED   | PCG  | KMB  | FE   | KO   | MO   | PPL   |
 | 24-09 | HUM  | PPG  | JNJ  | TDY  | PAYX | EVRG | MRK  | MRO  | KDP  | OTIS  |
 | 24-10 | HES  | FDX  | MGM  | AON  | TTWO | GIS  | PAYX | KMB  | SYY  | PNW   |
-| 24-11 | HES  | EOG  | CVX  | PPG  | ODFL | CNP  | MGM  | AOS  | CHD  | TXT   |
+| 24-11 | HES  | EOG  | CVX  | PPG  | JNJ  | CNP  | AOS  | CHD  | HST  | TTWO  |

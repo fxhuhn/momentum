@@ -123,6 +123,7 @@ def main() -> None:
     output = trade_matrix.unstack(level=1)
     output.loc[:, "Average"] = output.mean(axis=1)
     output.loc["Average", :] = output.mean(axis=0)
+    output.loc[:, "Yearly"] = output.Average.mul(12)
     output = output.round(2)
 
     with open("matrix.md", "w") as text_file:
@@ -131,8 +132,9 @@ def main() -> None:
             .replace("(", " ")
             .replace(")", " ")
             .replace("'", " ")
-            .replace(" ,", "")
-            .replace("Change", "        ")
+            .replace(" ,", "  ")
+            .replace("nan", "   ")
+            .replace("Change", "      ")
         )
     print(output)
 

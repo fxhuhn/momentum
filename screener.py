@@ -90,6 +90,8 @@ def main() -> None:
     trades = backtest(stocks)
 
     for year_month, symbols in trades.items():
+        trades[year_month].sort()
+
         if len(symbols) < 10:
             for i in range(len(symbols), 10):
                 trades[year_month].append("")

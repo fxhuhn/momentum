@@ -10,7 +10,9 @@ sp_500_stocks = SP500.stocks
 
 
 def load_stocks(symbols):
-    return yf.download(symbols, start="2000-01-01", group_by="ticker", rounding=True)
+    return yf.download(
+        symbols, start="2000-01-01", group_by="ticker", rounding=True, threads=False
+    )
 
 
 def pre_processing(df: pd.DataFrame) -> pd.DataFrame:

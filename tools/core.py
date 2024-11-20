@@ -1,6 +1,4 @@
-import pandas as pd
-
-
+"""
 def load_stocks(symbols):
     return yf.download(symbols, start="2000-01-01", group_by="ticker", rounding=True)
 
@@ -73,3 +71,4 @@ def strategy(df) -> pd.DataFrame:
 
     # return df.loc[ticker]["ROC_12"].nsmallest(MAX_TICKER).index
     # return df.loc[ticker]["ROC_12"].nlargest(MAX_TICKER).index
+"""

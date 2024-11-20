@@ -73,14 +73,18 @@ def load_sp500_stocks(cache: bool = True) -> pd.DataFrame:
 def main() -> None:
     stocks = load_sp500_stocks()
 
+    # add upcoming month
     stocks = pd.concat(
         [
-            stocks,
+            stocks.dropna(thresh=500),
             pd.DataFrame(
                 pd.Series(stocks.index[-1] + pd.Timedelta(days=30)), columns=["Date"]
             ).set_index("Date"),
         ]
     )
+
+    # fill future date with current data
+    stocks.iloc[-1] = stocks.iloc[-4:].ffill().iloc[-1]
 
     stocks = pre_processing(stocks)
 

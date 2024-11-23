@@ -1,12 +1,12 @@
-|       | 0    | 1    | 2     | 3   | 4   | 5   | 6    | 7    | 8    | 9    |
-|:------|:-----|:-----|:------|:----|:----|:----|:-----|:-----|:-----|:-----|
-| 24-03 | AFL  | AIG  | AZO   | CHD | COP | GD  | KR   | LYB  | STZ  | YUM  |
-| 24-04 | CHD  | CINF | CTRA  | ELV | GD  | HES | LH   | REGN | SNA  | TMUS |
-| 24-05 | ADP  | AVB  | CHD   | DOW | HES | LHX | MRK  | NOC  | PG   | ROL  |
-| 24-06 | CTRA | J    | KMI   | LHX | PM  | T   | TJX  | TMUS | WELL | WMT  |
-| 24-07 | AVB  | EQR  | HES   | KO  | NI  | OXY | PM   | T    | TYL  | UNH  |
-| 24-08 | ADP  | AVB  | CMS   | DGX | KO  | MO  | NI   | PPL  | V    | XOM  |
-| 24-09 | AVY  | BR   | BRK.B | CMS | CPB | DTE | EQR  | MA   | MMC  | V    |
-| 24-10 | AVY  | BR   | BRK.B | DHR | KO  | L   | LIN  | MA   | PTC  | UNP  |
-| 24-11 | HOLX | LHX  | MAR   | MO  | PTC | SYK | TEL  | TXN  | V    | WM   |
-| 24-12 | AEE  | AEP  | APD   | CMS | DTE | DUK | EVRG | L    | REG  | WEC  |
+|       | 0     | 1    | 2    | 3     | 4     | 5    | 6    | 7    | 8    | 9    |
+|:------|:------|:-----|:-----|:------|:------|:-----|:-----|:-----|:-----|:-----|
+| 24-03 | ANET  | ANSS | DOW  | LHX   | LIN   | LKQ  | SNA  | STT  | T    | UNH  |
+| 24-04 | ABNB  | EIX  | EL   | HOLX  | JBL   | LH   | LHX  | LIN  | LKQ  | TMUS |
+| 24-05 | AFL   | AKAM | CHD  | GEV   | HES   | NOC  | PG   | TMUS | TXT  | WELL |
+| 24-06 | ABNB  | ANET | ANSS | CHRW  | HOLX  | PM   | TMUS | VRSN | VTRS | WELL |
+| 24-07 | ADBE  | CINF | HES  | KO    | KVUE  | L    | NI   | PM   | TXT  | VTRS |
+| 24-08 | ADP   | CMS  | CNC  | KO    | KVUE  | L    | MO   | MOH  | V    | VTRS |
+| 24-09 | BRK.B | CINF | CPB  | EQR   | KVUE  | L    | MMC  | T    | V    | VRSN |
+| 24-10 | AKAM  | BA   | BAC  | BALL  | BRK.B | KO   | KVUE | L    | MOH  | PTC  |
+| 24-11 | ABNB  | LDOS | MOH  | NXPI  | PTC   | STT  | TEL  | TXT  | V    | VRSN |
+| 24-12 | ABNB  | AKAM | APH  | BRK.B | CHRW  | CSCO | STT  | V    | VRSN | XOM  |

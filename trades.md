@@ -1,12 +1,12 @@
-|       | 0     | 1     | 2     | 3     | 4    | 5     | 6    | 7    | 8    | 9    |
-|:------|:------|:------|:------|:------|:-----|:------|:-----|:-----|:-----|:-----|
-| 24-04 | BAX   | CHD   | CTSH  | GD    | HPQ  | LH    | NDSN | SNPS | TMUS | XYL  |
-| 24-05 | AFL   | CHD   | GEV   | HES   | LIN  | PG    | SBAC | SBUX | SJM  | TMUS |
-| 24-06 | AFL   | CTSH  | DHR   | GM    | LHX  | LIN   | MCK  | PM   | TMUS | WELL |
-| 24-07 | CINF  | HES   | KO    | MSCI  | NDSN | NI    | PANW | PM   | UNH  | WM   |
-| 24-08 | ADP   | AVB   | BAX   | C     | CMS  | ELV   | KO   | NI   | SNPS | V    |
-| 24-09 | BAX   | BRK.B | C     | CINF  | CPB  | EQR   | HPQ  | MA   | MMC  | V    |
-| 24-10 | AAL   | BR    | BRK.B | CINF  | FTNT | GOOGL | KO   | L    | MSCI | PTC  |
-| 24-11 | AMP   | FTNT  | HPQ   | INCY  | ON   | PTC   | SBAC | SNPS | TEL  | V    |
-| 24-12 | AME   | AMP   | AOS   | BRK.B | CSCO | HPQ   | PAYX | REG  | TGT  | V    |
-| 25-01 | BRK.B | CBOE  | CMS   | CSCO  | DTE  | EXPD  | EXR  | MCD  | PAYX | REG  |
+|       | 0     | 1    | 2     | 3    | 4    | 5   | 6    | 7    | 8    | 9   |
+|:------|:------|:-----|:------|:-----|:-----|:----|:-----|:-----|:-----|:----|
+| 24-05 | ADP   | AVB  | CHD   | DOW  | HES  | LHX | MRK  | NOC  | PG   | ROL |
+| 24-06 | CTRA  | J    | KMI   | LHX  | PM   | T   | TJX  | TMUS | WELL | WMT |
+| 24-07 | AVB   | EQR  | HES   | KO   | NI   | OXY | PM   | T    | TYL  | UNH |
+| 24-08 | ADP   | AVB  | CMS   | DGX  | KO   | MO  | NI   | PPL  | V    | XOM |
+| 24-09 | AVY   | BR   | BRK.B | CMS  | CPB  | DTE | EQR  | MA   | MMC  | V   |
+| 24-10 | AVY   | BR   | BRK.B | DHR  | KO   | L   | LIN  | MA   | PTC  | UNP |
+| 24-11 | HOLX  | LHX  | MAR   | MO   | PTC  | SYK | TEL  | TXN  | V    | WM  |
+| 24-12 | AEE   | ANSS | BRK.B | CSCO | DGX  | DTE | PAYX | REG  | V    | WEC |
+| 25-01 | BRK.B | C    | CSCO  | DTE  | EVRG | EXC | JNPR | L    | T    | TXN |
+| 25-02 | BRK.B | DRI  | DTE   | EQIX | EXC  | SPG |      |      |      |     |

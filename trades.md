@@ -1,12 +1,12 @@
-|       | 0    | 1    | 2     | 3    | 4    | 5    | 6    | 7    | 8    | 9    |
-|:------|:-----|:-----|:------|:-----|:-----|:-----|:-----|:-----|:-----|:-----|
-| 24-05 | AVB  | CHD  | CHRW  | HES  | IP   | IPG  | NOC  | SYY  | TXT  | VRSK |
-| 24-06 | BALL | FTNT | GM    | HCA  | OXY  | PM   | RVTY | SYY  | TAP  | TMUS |
-| 24-07 | ALB  | CPB  | HCA   | IP   | IPG  | KO   | NDSN | PM   | TAP  | TXT  |
-| 24-08 | AVB  | CMS  | CTAS  | DVA  | ELV  | EMN  | GEN  | HCA  | JBHT | KO   |
-| 24-09 | AVB  | CPB  | CTAS  | EQR  | GEN  | HCA  | HPQ  | JBHT | V    | VRSK |
-| 24-10 | AVB  | BA   | CPB   | JBHT | KMI  | KO   | OXY  | PTC  | UAL  | VRSK |
-| 24-11 | ALB  | AMP  | AMT   | FTNT | HPQ  | LHX  | PTC  | SYY  | TEL  | V    |
-| 24-12 | BA   | BR   | BRK.B | BRO  | BSX  | FTNT | HPQ  | OXY  | PAYX | UAL  |
-| 25-01 | BALL | C    | CSCO  | CTLT | JNPR | RCL  | T    | TAP  | TXT  | YUM  |
-| 25-02 | ANSS | BA   | BALL  | C    | CPB  | GEN  | JNPR | LMT  | SYY  | TXT  |
+|       | 0     | 1     | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    |
+|:------|:------|:------|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|
+| 24-05 | ADSK  | DLR   | GWW  | HES  | KEY  | KEYS | NOC  | NOW  | TMUS | TPR  |
+| 24-06 | ABT   | EL    | ELV  | KEY  | KEYS | LHX  | PM   | SOLV | TMUS | TPR  |
+| 24-07 | ABT   | DG    | KO   | MHK  | NI   | PM   | STX  | TPR  | TT   | WM   |
+| 24-08 | ADSK  | EL    | ELV  | GEN  | IR   | KO   | MO   | NI   | NOW  | TT   |
+| 24-09 | AVY   | BRK.B | CPB  | CVS  | GEN  | IR   | MMC  | NOW  | TT   | WELL |
+| 24-10 | AVY   | BRK.B | DIS  | DLR  | EQR  | KMI  | KO   | NOW  | ROL  | WELL |
+| 24-11 | CVS   | DOC   | GILD | INVH | IP   | LHX  | NWS  | STX  | TMUS | TPR  |
+| 24-12 | BRK.B | CSCO  | DOC  | EQR  | MMC  | PAYX | PG   | TGT  | WELL | XOM  |
+| 25-01 | BRK.B | CSCO  | EL   | ELV  | EQR  | EXPD | EXPE | MCD  | TT   | YUM  |
+| 25-02 | ANSS  | BRK.B | CDW  | CMG  | EXPD | EXPE | NOW  | REG  | TDY  | XOM  |

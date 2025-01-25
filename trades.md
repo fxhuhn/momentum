@@ -1,12 +1,12 @@
 |       | 0     | 1     | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    |
 |:------|:------|:------|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|
-| 24-05 | ADSK  | DLR   | GWW  | HES  | KEY  | KEYS | NOC  | NOW  | TMUS | TPR  |
-| 24-06 | ABT   | EL    | ELV  | KEY  | KEYS | LHX  | PM   | SOLV | TMUS | TPR  |
-| 24-07 | ABT   | DG    | KO   | MHK  | NI   | PM   | STX  | TPR  | TT   | WM   |
-| 24-08 | ADSK  | EL    | ELV  | GEN  | IR   | KO   | MO   | NI   | NOW  | TT   |
-| 24-09 | AVY   | BRK.B | CPB  | CVS  | GEN  | IR   | MMC  | NOW  | TT   | WELL |
-| 24-10 | AVY   | BRK.B | DIS  | DLR  | EQR  | KMI  | KO   | NOW  | ROL  | WELL |
-| 24-11 | CVS   | DOC   | GILD | INVH | IP   | LHX  | NWS  | STX  | TMUS | TPR  |
-| 24-12 | BRK.B | CSCO  | DOC  | EQR  | MMC  | PAYX | PG   | TGT  | WELL | XOM  |
-| 25-01 | BRK.B | CSCO  | EL   | ELV  | EQR  | EXPD | EXPE | MCD  | TT   | YUM  |
-| 25-02 | ANSS  | BRK.B | CDW  | CMG  | EXPD | EXPE | NOW  | REG  | TDY  | XOM  |
+| 24-05 | AVGO  | HBAN  | HES  | NOC  | PG   | RHI  | ROP  | SJM  | SWKS | TMUS |
+| 24-06 | EL    | ELV   | KMX  | LHX  | PM   | RVTY | TMUS | TXN  | TXT  | VTRS |
+| 24-07 | AVGO  | COO   | COP  | KO   | NI   | PM   | RSG  | TMUS | UNH  | VTRS |
+| 24-08 | AVB   | AVGO  | CMS  | EL   | ELV  | JBHT | KO   | MO   | SWKS | VTRS |
+| 24-09 | AVGO  | BRK.B | CPB  | CTRA | CTSH | JBHT | KO   | MMC  | OTIS | QCOM |
+| 24-10 | AIG   | BRK.B | EQR  | J    | JBHT | KO   | OTIS | PTC  | SWKS | UAL  |
+| 24-11 | COO   | COP   | J    | LHX  | PTC  | SBAC | TEL  | TMUS | TSN  | VST  |
+| 24-12 | BRK.B | DUK   | EQR  | J    | OTIS | PAYX | PCG  | PTC  | ROP  | UAL  |
+| 25-01 | BRK.B | CHD   | EL   | ELV  | EQR  | JNPR | SJM  | TFX  | YUM  | ZTS  |
+| 25-02 | ANSS  | BRK.B | EQIX | EQR  | J    | PCG  | REG  | ROP  | TEL  | UAL  |

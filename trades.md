@@ -9,4 +9,4 @@
 | 24-12 | AEE   | ANSS  | BRK.B | CSCO | DGX  | DTE | PAYX | REG  | V    | WEC  |
 | 25-01 | BRK.B | C     | CSCO  | DTE  | EVRG | EXC | JNPR | L    | T    | TXN  |
 | 25-02 | BR    | BRK.B | CMS   | DTE  | LH   | LIN | MKC  | MMC  | REG  | VRSN |
-| 25-03 | ABT   | AZO   | DTE   | EQIX | L    | MKC | MMC  | NWSA | PG   | VRSN |
+| 25-03 | ABT   | ACN   | BR    | EOG  | MCD  | MMC | NWSA | ROK  | TEL  | VRSN |
